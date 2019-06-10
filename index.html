@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Personal Kanban</title>
+
+        <!-- Stylesheets -->
+        <link rel="stylesheet" type="text/css" href="css/reset.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+    </head>
+
+    <body>
+        <header>
+            <input type="text" placeholder="Add a task..." id="item">
+            <button id="add">
+                <i class="fas fa-plus"></i>
+            </button>
+        </header>
+
+        <div class="base">
+
+            <ul class="todo" id="incompleted"></ul>
+
+            <ul class="todo" id="completed"></ul>
+            
+        </div>
+
+        <!-- JavaScript -->
+        <!-- script tag goes here because html doc is loaded from begining so the button doesn't exist in the dom yet
+            have to add window.onload to js for the DOM to be able to grab this from -->
+        <script src="js/main.js" type="text/javascript"></script>
+        <script src="https://kit.fontawesome.com/46de9d34d7.js"></script>
+    </body>
+
+</html>
