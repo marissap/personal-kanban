@@ -1,37 +1,42 @@
 @charset "UTF-8";
 
-body {
-    background: #dedfd5;   
-    padding: 80px 0 0 0; /* this commensates for the header */
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
 }
 
-body, input, button {
-    font-family: 'Roboto', sans-serif;
+body {
+    background: #e0e0e0;   
 }
 
 header {
     width: 100%;
-    height: 80px;
-    position: fixed;
-    padding: 15px;
-    top: 0;
-    left: 0;
-    z-index: 5;
-    background: #25b99a;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+    height: auto;
+    position: relative;
 }
 
-header input {
+header .head {
+    width: 50%;
+    height: 80px;
+    margin: auto;
+    position: relative;
+    padding: 15px;
+
+    background: #b7b8b6;
+    box-shadow: 0px 2px 4px rgba(44, 62, 80, 0.15);
+    border-radius: 10px;
+}
+
+header .head input {
     width: 100%;
     height: 50px;
     float: left;
-    color: #ffffff;
+    color: #000000;
     font-size: 15px;
     font-weight: 400;
     text-indent: 18px; /* instead of padding this doesn't break on overflow */
     padding: 0 60px 0 0; /* acommadate for button */
-    background: #87cfc0;
+    background: #cacaca;
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
     border-top-left-radius: 5px;
@@ -40,35 +45,57 @@ header input {
     border: 0px;
 } 
 
-header input::-webkit-input-placeholder {
+header .head input::-webkit-input-placeholder {
     color: rbga(255, 255, 255, 0.75);
 }
 
-header input:-moz-input-placeholder {
+header .head input:-moz-input-placeholder {
     color: rbga(255, 255, 255, 0.75);
 }
 
-header input:-ms-input-placeholder {
+header .head input:-ms-input-placeholder {
     color: rbga(255, 255, 255, 0.75);
 }
 
-header button {
+header .head button {
     width: 50px;
     height: 50px;
     position: absolute;
     top: 15px; /* acommadate padding */
     right: 15px; /* acommadate padding */
-    z-index: 2;    
+    z-index: 2;
+    
+    background: #cacaca;
+    border: 0px;
+    box-shadow: none;
+    outline: none;
+    cursor: pointer;
 }
 
 .fa-plus {
-    color: #f0106d;
+    color: #000000;
+    font-size: 20px;
 }
 
-.base {
-    width: 100%;
+.column {
     float: left;
-    padding: 15px;
+    width: 33.33%;
+    padding: 10px;
+    height: 100%;
+}
+
+.column h2 {
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: flex;
+    flex-direction: column;
+    clear: both;
 }
 
 ul.todo {
@@ -92,6 +119,18 @@ ul.todo li {
     box-shadow: 0px 1px 2px rgba(44, 62, 80, 0.10);   
     margin: 0 0 10px 0;
     padding: 14px 100px 14px 14px; /* break when it hits the button */ 
+}
+
+ul.todo#incompleted li {
+    box-shadow: 1px 2px 3px rgba(251, 101, 66, 1);   
+}
+
+ul.todo#progressing li {
+    box-shadow: 1px 2px 3px rgba(255, 187, 0, 1);   
+}
+
+ul.todo#completed li {
+    box-shadow: 1px 2px 3px rgba(63, 104, 28, 1);   
 }
 
 ul.todo li:last-of-type { /* instead of last child because if you have any other list items in another class you actually want the last of li */
@@ -123,7 +162,7 @@ ul.todo li .buttons button:last-of-type:before {
     width: 1px;
     height: 30px;
     position: absolute;
-    background: #f0106d;
+    background: #bbbbbb;
     top: 10px;
     left: 0px;
     box-shadow: none;
@@ -131,49 +170,35 @@ ul.todo li .buttons button:last-of-type:before {
 
 .fa-times,
 .fa-arrow-right {
-    width: 22px;
-    height: 22px;
+    font-size: 20px;
     position: absolute;
     top: 50%;
     left: 50%;
-    color: #25b99a;
     margin: -11px 0 0 -11px;
 }
 
-.fa-times:hover, 
-.fa-arrow-right:hover {
-    background: rgba(37, 185, 154, 0.5);
+ul.todo#incompleted li .fa-arrow-right:hover {
+    color: rgba(251, 101, 66, 1);
 }
 
-.fa-arrow-right {
-    border-radius: 11px;
-    border: 1.5px solid #25b99a;
-    transition: background 0.2s ease;
+ul.todo#progressing li .fa-arrow-right:hover {
+    color: rgba(255, 187, 0, 1);
 }
 
-ul.todo#completed li .buttons button.fas fa-arrow-right {
-    color: #ffffff;
+ul.todo#completed li .fa-arrow-right:hover {
+    color: rgba(63, 104, 28, 1);
 }
 
-ul.todo#completed {
-    position: relative;
-    padding: 60px 0 0 0;
-}
-
-ul.todo#completed:before {
-    content: '';
-    width: 100px;
-    height: 1px;
-    background: #d8e5c0;
-    position: absolute;
-    top: 30px;
-    left: 50px;
-    margin: 0 0 0 -75px;
-}
+.fa-times:hover {
+    color: rgb(255, 0, 0);
+} 
 
 ul.todo#incompleted:empty:after {
     content: 'You have nothing todo.';
-    margin: 15px;
+}
+
+ul.todo#progressing:empty:after {
+    content: 'You have nothing in progress.';
 }
 
 ul.todo#completed:empty:after {
@@ -181,6 +206,7 @@ ul.todo#completed:empty:after {
 }
 
 ul.todo#incompleted:after, /* don't really have to add :empty here before it won't be applied when empty */
+ul.todo#progressing:after,
 ul.todo#completed:after {
     width: 100%;
     display: block;

@@ -1,8 +1,9 @@
-
 // object for storing in local storage
 var data = (localStorage.getItem('todoList')) ? JSON.parse(localStorage.getItem('todoList')): {
     incomplete: [],
-    complete: []
+    inprogress: [],
+    complete: [],
+    history: []
 };
 
 // variables for inner html
@@ -39,17 +40,27 @@ function addOnClick(value) {
 
 // On start up, get data in local storage
 function renderTodoList() {
-    if (!data.incomplete.length && !data.complete.length) return;
+    if (!data.incomplete.length && !data.inprogress.length && !data.complete.length) return;
 
     for (var i = 0; i < data.incomplete.length; i++) {
         var value = data.incomplete[i];
-        addItemToDOM(value, false);
+        addItemToDOM(value, "inc");
     }
 
-    for (var j = 0; j < data.complete.length; j++) {
-        var value = data.complete[j];
-        addItemToDOM(value, true);
+    for (var j = 0; j < data.inprogress.length; j++) {
+        var value = data.inprogress[j];
+        addItemToDOM(value, "inp");
     }
+
+    for (var k = 0; k < data.complete.length; k++) {
+        var value = data.complete[k];
+        addItemToDOM(value, "com");
+    }
+
+    // for (var m = 0; m < data.history.length; m++) {
+    //     var value = data.history[m];
+    //     addItemToHistory(value);
+    // }
 }
 
 // Local Storage
@@ -68,6 +79,8 @@ function removeItem() {
     // save to object
     if (id === "incompleted") {
         data.incomplete.splice(data.incomplete.indexOf(value), 1); // button is inside li so grab inner text
+    } else if (id === "progressing") {
+        data.inprogress.splice(data.inprogress.indexOf(value), 1); // button is inside li so grab inner text
     } else {
         data.complete.splice(data.complete.indexOf(value), 1); // button is inside li so grab inner text
     }
@@ -76,7 +89,7 @@ function removeItem() {
     parent.removeChild(item);
 }
 
-// Complete
+// Progress Item
 function completeItem() {
     var parent = this.parentNode.parentNode.parentNode;
     var item = this.parentNode.parentNode;
@@ -86,23 +99,26 @@ function completeItem() {
     // save to object
     if (id === "incompleted") {
         data.incomplete.splice(data.incomplete.indexOf(value), 1); // button is inside li so grab inner text
+        data.inprogress.push(value);
+    } else if (id === "progressing") {
+        data.inprogress.splice(data.inprogress.indexOf(value), 1); // button is inside li so grab inner text
         data.complete.push(value);
     } else {
         data.complete.splice(data.complete.indexOf(value), 1); // button is inside li so grab inner text
-        data.incomplete.push(value);
+        data.history.push(value);
     }
     dataObjectUpdate();
 
     // check if item should be moved to completed or to incompleted
-    var target = (id === 'incompleted') ? document.getElementById('completed'):document.getElementById('incompleted'); // takes the places of if/else conditional statement
+    var target = (id === 'incompleted') ? document.getElementById('progressing') : (id === 'progressing') ? document.getElementById('completed') : document.getElementById('incompleted'); // takes the places of if/else conditional statement
 
     parent.removeChild(item);
     target.insertBefore(item, target.childNodes[0]);
 }
 
 // Adds new item to the todo list
-function addItemToDOM(text, flag) {
-    var list = (flag) ? document.getElementById('completed'):document.getElementById('incompleted');
+function addItemToDOM(text, state) {
+    var list = (state === 'com') ? document.getElementById('completed') : (state === 'inp') ? document.getElementById('progressing') : document.getElementById('incompleted');
 
     // create an html element to add to the dom
     // adding inner html method is going to be slow, take up memory, be unstable, especially hard on mobile devices to render it up
@@ -114,14 +130,14 @@ function addItemToDOM(text, flag) {
 
     var remove = document.createElement('button');
     remove.classList.add('remove');
-    // remove.innerHTML(removeFA);
+    remove.innerHTML = removeFA;
 
-    // add click event for removing item 
+    // add click event for toggling removing item
     remove.addEventListener('click', removeItem);
 
     var done = document.createElement('button');
     done.classList.add('done');
-    // done.innerHTML(doneFA);
+    done.innerHTML = doneFA;
 
     // add click event for toggling completition of item 
     done.addEventListener('click', completeItem);
