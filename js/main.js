@@ -31,9 +31,9 @@ document.getElementById('item').addEventListener('keydown', function (e) {
 
 // Adding from input line
 function addOnClick(value) {
-    addItemToDOM(value, false); // if there is any text in the item field, add that text to the todo list
+    addItemToDOM(value, "inc"); // if there is any text in the item field, add that text to the todo list
     document.getElementById('item').value = ''; // reset value so input field is empty
-    
+
     data.incomplete.push(value);
     dataObjectUpdate();
 }
@@ -57,10 +57,10 @@ function renderTodoList() {
         addItemToDOM(value, "com");
     }
 
-    // for (var m = 0; m < data.history.length; m++) {
-    //     var value = data.history[m];
-    //     addItemToHistory(value);
-    // }
+    for (var m = 0; m < data.history.length; m++) {
+        var value = data.history[m];
+        addItemToDOM(value, "hist");
+    }
 }
 
 // Local Storage
@@ -110,7 +110,7 @@ function completeItem() {
     dataObjectUpdate();
 
     // check if item should be moved to completed or to incompleted
-    var target = (id === 'incompleted') ? document.getElementById('progressing') : (id === 'progressing') ? document.getElementById('completed') : document.getElementById('incompleted'); // takes the places of if/else conditional statement
+    var target = (id === 'incompleted') ? document.getElementById('progressing') : (id === 'progressing') ? document.getElementById('completed') : document.getElementById('history'); // takes the places of if/else conditional statement
 
     parent.removeChild(item);
     target.insertBefore(item, target.childNodes[0]);
@@ -118,7 +118,7 @@ function completeItem() {
 
 // Adds new item to the todo list
 function addItemToDOM(text, state) {
-    var list = (state === 'com') ? document.getElementById('completed') : (state === 'inp') ? document.getElementById('progressing') : document.getElementById('incompleted');
+    var list = (state === 'com') ? document.getElementById('completed') : (state === 'inp') ? document.getElementById('progressing') : (state === 'inc') ? document.getElementById('incompleted') : document.getElementById('history');
 
     // create an html element to add to the dom
     // adding inner html method is going to be slow, take up memory, be unstable, especially hard on mobile devices to render it up
@@ -135,16 +135,30 @@ function addItemToDOM(text, state) {
     // add click event for toggling removing item
     remove.addEventListener('click', removeItem);
 
-    var done = document.createElement('button');
-    done.classList.add('done');
-    done.innerHTML = doneFA;
-
-    // add click event for toggling completition of item 
-    done.addEventListener('click', completeItem);
-
     buttons.appendChild(remove);
-    buttons.appendChild(done);
+
+    if (state != "hist") {
+        var done = document.createElement('button');
+        done.classList.add('done');
+        done.innerHTML = doneFA;
+    
+        // add click event for toggling completition of item 
+        done.addEventListener('click', completeItem);
+
+        buttons.appendChild(done);
+    }
+
     item.appendChild(buttons);
  
     list.insertBefore(item, list.childNodes[0]);
 }
+
+// task history collapsible right side bar
+function openHistory() {
+    document.getElementById("history-overlay").style.width = "100%";
+  }
+  
+  /* Close when someone clicks on the "x" symbol inside the overlay */
+  function closeHistory() {
+    document.getElementById("history-overlay").style.width = "0%";
+  }

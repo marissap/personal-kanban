@@ -138,6 +138,10 @@ ul.todo#completed li {
     box-shadow: 1px 2px 3px rgba(63, 104, 28, 1);   
 }
 
+ul.todo#history li {
+    box-shadow: 1px 2px 3px rgb(2, 226, 255, 1);   
+}
+
 ul.todo li:last-of-type { /* instead of last child because if you have any other list items in another class you actually want the last of li */
     margin: 0;
 }
@@ -218,4 +222,61 @@ ul.todo#completed:after {
     text-align: center;
     font-size: 12px;
     color: #aaaaaa;
+}
+
+.overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.87);
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.overlay-content {
+    position: relative;
+    width: 25%;
+    margin: 0 33.3% 0;
+    text-align: center;
+}
+
+.overlay a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.overlay a:hover, .overlay a:focus {
+    color: #f1f1f1;
+}
+
+.overlay .closebtn {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+}
+
+@media screen and (max-height: 450px) {
+    .overlay a {
+        font-size: 20px
+    }
+    .overlay .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+    }
+}
+
+span {
+    font-size: 30px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
 }

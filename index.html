@@ -5,7 +5,6 @@
         <title>Personal Kanban</title>
 
         <!-- Stylesheets -->
-        <link rel="stylesheet" type="text/css" href="css/reset.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
         
         <!-- Fonts -->
@@ -24,6 +23,15 @@
             </div>
         </header>
 
+        <div id="history-overlay" class="overlay">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeHistory()">&times;</a>
+            <div class="overlay-content">
+                <ul class="todo" id="history"></ul>
+            </div>
+        </div>
+          
+        <span onclick="openHistory()"><i class="fas fa-history"></i></span>
+            
         <div class="row">
             <div class="column">
                 <h2>Todo</h2>
