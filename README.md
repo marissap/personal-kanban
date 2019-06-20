@@ -3,7 +3,7 @@
 ### Current Features
 * Todo, inprogress, completed columns
 * Local Storage
+* History for completed items
 
 ### In-Progress Features
-* History for completed items
 * Pop out tasks for notes
